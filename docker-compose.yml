@@ -1,0 +1,24 @@
+version : '3.9'
+services:
+  mysql-database:
+    image: "mysql"
+    cap_add:
+      - SYS_NICE
+    container_name: mysql-database
+    restart: always
+    #command: chmod 775 -R /docker-entrypoint-initdb.d
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./scripts/000-init.sql:/docker-entrypoint-initdb.d/000-init.sql
+      - ./scripts/020-category.sql:/docker-entrypoint-initdb.d/020-category.sql
+      - ./scripts/030-user.sql:/docker-entrypoint-initdb.d/030-user.sql
+      - ./scripts/040-expense.sql:/docker-entrypoint-initdb.d/040-expense.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=*****
+      - MYSQL_USER=igortessaro
+      - MYSQL_PASSWORD==*****
+      - MYSQL_DATABASE=smart-home-db
+    ports:
+      - "3306:3306"
+    expose:
+      - 3306
